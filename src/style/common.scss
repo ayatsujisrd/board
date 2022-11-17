@@ -1,0 +1,12 @@
+$directions: (t: top, b: bottom, l: left, r: right);
+
+@for $i from 1 through 20 {
+  @each $dir, $value in $directions {
+    .m#{$dir}-#{$i} {
+      margin-#{$value}: $i * 0.5em;
+    }
+    .p#{$dir}-#{$i} {
+      padding-#{$value}: $i * 0.5em;
+    }
+  }
+}
