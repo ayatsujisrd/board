@@ -1,4 +1,9 @@
-$directions: (t: top, b: bottom, l: left, r: right);
+$directions: (
+  t: top,
+  b: bottom,
+  l: left,
+  r: right,
+);
 
 @for $i from 1 through 20 {
   @each $dir, $value in $directions {
@@ -9,4 +14,18 @@ $directions: (t: top, b: bottom, l: left, r: right);
       padding-#{$value}: $i * 0.5em;
     }
   }
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+}
+ul > li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+div {
+  box-sizing: border-box;
 }
