@@ -13,7 +13,6 @@ const formRef = ref<FormInstance>()
 const rules = reactive<FormRules>({
   username: [
     { required: true, message: 'Please enter your username', trigger: 'blur' },
-    { min: 5, max: 10, message: 'Your username length should be 5 to 10', trigger: 'blur' }
   ],
   password: [
     { required: true, message: 'Please enter your password', trigger: 'blur' },
@@ -29,7 +28,7 @@ const confirm = () => {
         const { status, data, msg } = res
 
         if (status === 200 && data.code === 1) {
-          router.push({ path: '/' })
+          router.push({ path: '/home' })
           window.sessionStorage.setItem('username', form.username)
         } else {
           ElMessage.error(msg)
@@ -57,7 +56,7 @@ const confirm = () => {
             <el-input v-model="form.username" placeholder="Username"></el-input>
           </el-form-item>
           <el-form-item label="Password" prop="password">
-            <el-input v-model="form.password" placeholder="Password"></el-input>
+            <el-input type="password" v-model="form.password" placeholder="Password"></el-input>
           </el-form-item>
         </el-form>
         <div class="ml-4">

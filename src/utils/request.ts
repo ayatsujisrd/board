@@ -2,13 +2,15 @@ import axios, { AxiosRequestConfig } from 'axios'
 
 
 const instance = axios.create({
-  baseURL: import.meta.env.BASE_URL,
+  baseURL: import.meta.env.API_URL,
   timeout: 10000,
 })
 
+console.log(import.meta.env.API_URL)
+
 export default instance
 
-const service = <T>(config: AxiosRequestConfig):Promise<T> => instance<T>(config).then((result) => result.data)
+const service = <T>(config: AxiosRequestConfig): Promise<T> => instance<T>(config).then((result) => result.data)
 
 export const get = <T>(url: string, params?: any) => service<T>({
   method: 'GET',

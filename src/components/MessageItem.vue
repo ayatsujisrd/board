@@ -4,7 +4,7 @@ import Avatar from './Avatar.vue'
 
 interface MessageItemProps {
   id: string,
-  name: string,
+  user: string,
   createTime: string,
   content: string,
   replies?: MessageItemProps[]
@@ -20,25 +20,28 @@ const showReplyInput = () => {
 }
 
 const confirm = () => {
-  console.log(reply.value)
   if (reply.value) {
-
     shownReplyInput.value = false
   }
+}
+
+const cancel = () => {
+  shownReplyInput.value = false
+  reply.value = ''
 }
 
 </script>
 <template>
   <div class="message-item">
     <div class="user">
-      <Avatar :name="name" />
+      <Avatar :name="user" />
     </div>
     <div class="content-wrapper">
       <div class="content">{{ content }}</div>
       <ul class="reply" v-if="replies && replies.length">
         <li class="item" v-for="(reply) in replies" :key="reply.id">
           <div class="user">
-            <Avatar :name="name" />
+            <Avatar :name="user" />
           </div>
           <div class="content-wrapper ml-4">
             <div class="content">{{ reply.content }}</div>
@@ -53,6 +56,7 @@ const confirm = () => {
       <div class="reply-input mt-4" v-if="shownReplyInput">
         <el-input type="textarea" :rows="4" v-model="reply"></el-input>
         <el-button type="primary" class="mt-2" @click="confirm">confirm</el-button>
+        <el-button class="ml-2 mt-2" @click="cancel">cancel</el-button>
       </div>
     </div>
   </div>

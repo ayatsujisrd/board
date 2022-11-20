@@ -80,10 +80,10 @@ const confirm = () => {
             <el-input v-model="form.email" placeholder="Email"></el-input>
           </el-form-item>
           <el-form-item label="Password" prop="password">
-            <el-input v-model="form.password" placeholder="Password"></el-input>
+            <el-input type="password" v-model="form.password" placeholder="Password"></el-input>
           </el-form-item>
           <el-form-item label="Confirm" prop="password_again">
-            <el-input v-model="form.password_again" placeholder="Password Again"></el-input>
+            <el-input type="password" v-model="form.password_again" placeholder="Password Again"></el-input>
           </el-form-item>
         </el-form>
         <el-button type="primary" @click="confirm" class="ml-8 mt-2">Confirm</el-button>

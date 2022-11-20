@@ -21,4 +21,13 @@ const router = createRouter({
   history: createWebHashHistory(),
   routes
 })
+
+router.beforeEach((to, from, next) => {
+  if (!window.sessionStorage.getItem('username') && to.name !== 'signin') {
+    console.log('signin')
+    next({name: 'signin'})
+  } else {
+    next()
+  }
+})
 export default router

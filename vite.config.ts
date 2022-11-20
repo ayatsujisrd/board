@@ -9,5 +9,11 @@ export default defineConfig({
       '@': '/src'
     },
     extensions: ['.ts', '.vue', '.js']
+  },
+  server: {
+    proxy: {
+      target: 'http://localhost:3003',
+      rewrite: (path: string) => path.replace(/^\/api/, '')
+    }
   }
 })
