@@ -67,6 +67,10 @@ const cancel = () => {
   font-size: 1em;
   padding: 0.5em 1em;
   border: 1px solid #eee;
+  
+  & + .message-item {
+    margin-top: 1em;
+  }
 
   .content-wrapper {
     flex: 1;

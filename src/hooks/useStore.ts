@@ -1,10 +1,10 @@
 import { reactive } from "vue";
 import { MessageItemProps } from "../types";
 
-const store = reactive<{username: string, messages: MessageItemProps[], category: string}>({
-  username: 'Tom',
+const store = reactive<{ username: string, messages: MessageItemProps[], category: string }>({
+  username: window.sessionStorage.getItem('username') || 'Tom',
   messages: [],
-  category: ''
+  category: 'toys'
 })
 
 const useStore = () => {

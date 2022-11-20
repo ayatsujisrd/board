@@ -4,9 +4,10 @@ import { reactive, ref } from '@vue/reactivity';
 import { MessageItemProps } from '../types';
 import useStore from '../hooks/useStore';
 import MessageItem from '../components/MessageItem.vue';
-import { addMessage } from '../api';
+import { addMessage, getMessages } from '../api';
 import { ElMessage } from 'element-plus';
-import { useRouter } from 'vue-router';
+import { watch } from '@vue/runtime-core';
+
 interface MenuItem {
   name: string,
   active: boolean
@@ -31,19 +32,6 @@ const search = () => {
   }
 }
 
-const messages: MessageItemProps[] = [{
-  id: '1',
-  user: 'Tim',
-  content: 'hello world',
-  createTime: '2020-10-10 00:00:00',
-  replies: [{
-    id: '1',
-    user: 'Tim',
-    content: 'hello world',
-    createTime: '2020-10-10 00:00:00',
-  }]
-}]
-
 const shownMessageInput = ref(false)
 const messageText = ref('')
 
@@ -55,13 +43,22 @@ const confirmAdd = async () => {
   if (messageText.value) {
     const username = window.sessionStorage.getItem('username') as string
     try {
-      const result = await addMessage({ user: username, content: messageText.value })
+      const result = await addMessage({ user: username, content: messageText.value, category: store.category })
       if (result.status === 200 && result.data) {
-
+        const { id, createTime } = result.data
+        store.messages.unshift({
+          id,
+          createTime,
+          content: messageText.value,
+          user: username,
+          category: store.category,
+          replies: []
+        })
       }
     } catch (e) {
       ElMessage.error('Network error')
     }
+    shownMessageInput.value = false
   }
 }
 
@@ -70,17 +67,27 @@ const cancel = () => {
   messageText.value = ''
 }
 
-const router = useRouter()
+const getMessageList = async () => {
+  const result = await getMessages({ category: store.category, pageSize: 10, pageNo: 1 })
+  store.messages = result.data
+}
 
 const pickCategory = (item: MenuItem) => {
   let category = item.name
-  category = category.toLowerCase()
-  router.push({ path: '/home/' + category })
+  store.category = category.toLowerCase()
+
   menu.forEach((item) => {
     item.active = false
   })
   item.active = true
 }
+
+watch(() => store.category, () => {
+  getMessageList()
+})
+store.category = 'toys'
+
+getMessageList()
 
 </script>
 <template>
@@ -110,13 +117,19 @@ const pickCategory = (item: MenuItem) => {
     </el-header>
     <el-main>
       <div class="container">
-        <message-item v-for="item in messages" :key="item.id" v-bind="item" />
+        <Fragment v-if="store.messages && store.messages.length">
+          <message-item v-for="item in store.messages" :key="item.id" v-bind="item" />
+        </Fragment>
+        <Fragment v-else>
+          <el-empty description="no data"></el-empty>
+        </Fragment>
+        <div class="input mt-4" v-if="shownMessageInput">
+          <el-input type="textarea" :rows="4" v-model="messageText"></el-input>
+          <el-button type="primary" class="mt-2" @click="confirmAdd">confirm</el-button>
+          <el-button class="mt-2 ml-2" @click="cancel">cancel</el-button>
+        </div>
       </div>
-      <div class="input" v-if="shownMessageInput">
-        <el-input type="textarea" :rows="4" v-model="messageText"></el-input>
-        <el-button type="primary" class="mt-2" @click="confirmAdd">confirm</el-button>
-        <el-button class="mt-2 ml-2" @click="cancel">cancel</el-button>
-      </div>
+
     </el-main>
     <el-button :icon="Plus" class="fixed" @click="showMessageInput"></el-button>
   </el-container>

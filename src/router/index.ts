@@ -24,7 +24,6 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   if (!window.sessionStorage.getItem('username') && to.name !== 'signin') {
-    console.log('signin')
     next({name: 'signin'})
   } else {
     next()

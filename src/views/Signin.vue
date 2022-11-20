@@ -3,6 +3,7 @@ import { reactive, ref } from "@vue/reactivity";
 import { ElMessage, ElMessageBox, FormInstance, FormRules } from "element-plus";
 import { useRouter } from "vue-router";
 import { signin } from '../api'
+import useStore from "../hooks/useStore";
 
 const form = reactive({
   username: '',
@@ -21,6 +22,7 @@ const rules = reactive<FormRules>({
 })
 
 const router = useRouter()
+const store = useStore()
 const confirm = () => {
   formRef.value?.validate((valid) => {
     if (valid) {
@@ -28,8 +30,9 @@ const confirm = () => {
         const { status, data, msg } = res
 
         if (status === 200 && data.code === 1) {
-          router.push({ path: '/home' })
+          router.push({ path: '/' })
           window.sessionStorage.setItem('username', form.username)
+          store.username = form.username
         } else {
           ElMessage.error(msg)
         }

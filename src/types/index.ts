@@ -1,6 +1,7 @@
 export interface MessageParams {
   user: string,
-  content: string
+  content: string,
+  category: string
 }
 export interface MessageItemProps extends MessageParams {
   id: string,
