@@ -47,6 +47,7 @@ const confirmAdd = async () => {
       if (result.status === 200 && result.data) {
         const { id, createTime } = result.data
         store.messages.unshift({
+          _id: id,
           id,
           createTime,
           content: messageText.value,
@@ -54,6 +55,8 @@ const confirmAdd = async () => {
           category: store.category,
           replies: []
         })
+
+        messageText.value = ''
       }
     } catch (e) {
       ElMessage.error('Network error')
@@ -69,7 +72,7 @@ const cancel = () => {
 
 const getMessageList = async () => {
   const result = await getMessages({ category: store.category, pageSize: 10, pageNo: 1 })
-  store.messages = result.data
+  store.messages = reactive(result.data)
 }
 
 const pickCategory = (item: MenuItem) => {
@@ -82,9 +85,20 @@ const pickCategory = (item: MenuItem) => {
   item.active = true
 }
 
+const replied = (data: { id: string, reply: MessageItemProps }) => {
+  const item = store.messages.find((m) => m.id === data.id)
+  if (item) {
+    if (!item.replies) {
+      item.replies = []
+    }
+    item.replies.push(data.reply)
+  }
+}
+
 watch(() => store.category, () => {
   getMessageList()
 })
+
 store.category = 'toys'
 
 getMessageList()
@@ -117,12 +131,12 @@ getMessageList()
     </el-header>
     <el-main>
       <div class="container">
-        <Fragment v-if="store.messages && store.messages.length">
-          <message-item v-for="item in store.messages" :key="item.id" v-bind="item" />
-        </Fragment>
-        <Fragment v-else>
+        <div v-if="store.messages && store.messages.length">
+          <message-item v-for="item in store.messages" :key="item.id" v-bind="item" @add-reply="replied" />
+        </div>
+        <div v-else>
           <el-empty description="no data"></el-empty>
-        </Fragment>
+        </div>
         <div class="input mt-4" v-if="shownMessageInput">
           <el-input type="textarea" :rows="4" v-model="messageText"></el-input>
           <el-button type="primary" class="mt-2" @click="confirmAdd">confirm</el-button>

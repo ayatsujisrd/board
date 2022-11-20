@@ -4,6 +4,7 @@ export interface MessageParams {
   category: string
 }
 export interface MessageItemProps extends MessageParams {
+  _id: string,
   id: string,
   createTime: string,
   replies?: MessageItemProps[]
