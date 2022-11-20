@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import { reactive, ref } from "@vue/reactivity";
-import { FormInstance, FormRules } from "element-plus";
+import { ElMessage, FormInstance, FormRules } from "element-plus";
+import { useRouter } from "vue-router";
+import { signup } from '../api'
 
 const form = reactive({
   username: '',
@@ -40,10 +42,22 @@ const rules = reactive<FormRules>({
       trigger: 'blur'
     }]
 })
+
+const router = useRouter()
+
 const confirm = () => {
   formRef.value?.validate((valid) => {
     if (valid) {
-      // TODO: signup
+      signup({ name: form.username, password: form.password, email: form.email }).then((res) => {
+        const { status, data, msg } = res
+        if (status === 200 && data.code === 1) {
+          router.push('/signin')
+        } else {
+          ElMessage.error(data.msg)
+        }
+      }).catch(() => {
+        ElMessage.error('Network error')
+      })
     } else {
       console.log('invalid input')
     }
