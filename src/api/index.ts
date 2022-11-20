@@ -3,9 +3,9 @@ import { del, get, post, put } from '../utils/request'
 
 export const signin = (params: User) => post<ResponseWithData<{ code: 0 | 1, msg: string }>>('/signin', params)
 
-export const signup = (params: UserWithEmail) => post<ResponseWithData<{ code: 0 | 1, msg: string }>>('/signup', params)
+export const signup = (params: UserWithEmail) => put<ResponseWithData<{ code: 0 | 1, msg: string }>>('/signup', params)
 
-export const getMessages = (params: { category: string, pageSize: number, pageNo: number }) => get<ResponseWithData<MessageItemProps[]>>('/messages/' + params.category, { pageSize: params.pageSize, pageNo: params.pageNo })
+export const getMessages = (params: { category: string, pageSize: number, pageNo: number, search?: string }) => get<ResponseWithData<MessageItemProps[]>>('/messages/' + params.category, { pageSize: params.pageSize, pageNo: params.pageNo, search: params.search })
 
 export const addMessage = (params: MessageParams) => put<ResponseWithData<ResponseId>>('/addMessage', params)
 

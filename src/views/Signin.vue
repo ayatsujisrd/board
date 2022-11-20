@@ -64,7 +64,7 @@ const confirm = () => {
         </el-form>
         <div class="ml-4">
           <el-button type="primary" @click="confirm" class="mt-2">Confirm</el-button>
-          <el-link type="primary" href="#/signin" :underline="true" class="ml-4 pt-2">sign up</el-link>
+          <el-link type="primary" href="#/signup" :underline="true" class="ml-4 pt-2">sign up</el-link>
           <el-link type="primary" href="#/forget" :underline="true" class="ml-4 pt-2">forget password?</el-link>
 
         </div>

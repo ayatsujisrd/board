@@ -118,7 +118,7 @@ const cancel = () => {
             <el-button link type="primary" @click="removeReply(id, reply.id)">delete</el-button>
           </div>
           <div class="user">
-            <Avatar :name="user" />
+            <Avatar :name="reply.user" />
           </div>
           <div class="content-wrapper ml-4">
             <div class="content">{{ reply.content }}</div>

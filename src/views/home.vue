@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { User, Search, Plus } from '@element-plus/icons-vue'
+import { User, Search, Plus, SwitchButton } from '@element-plus/icons-vue'
 import { reactive, ref } from '@vue/reactivity';
 import { MessageItemProps } from '../types';
 import useStore from '../hooks/useStore';
@@ -7,6 +7,7 @@ import MessageItem from '../components/MessageItem.vue';
 import { addMessage, getMessages } from '../api';
 import { ElMessage } from 'element-plus';
 import { watch } from '@vue/runtime-core';
+import { useRoute, useRouter } from 'vue-router';
 
 interface MenuItem {
   name: string,
@@ -27,9 +28,7 @@ const menu = reactive<MenuItem[]>([{
 }])
 
 const search = () => {
-  if (searchText.value) {
-    console.log(searchText.value)
-  }
+  getMessageList()
 }
 
 const shownMessageInput = ref(false)
@@ -71,7 +70,7 @@ const cancel = () => {
 }
 
 const getMessageList = async () => {
-  const result = await getMessages({ category: store.category, pageSize: 10, pageNo: 1 })
+  const result = await getMessages({ category: store.category, pageSize: 10, pageNo: 1, search: searchText.value })
   store.messages = reactive(result.data)
 }
 
@@ -103,6 +102,13 @@ store.category = 'toys'
 
 getMessageList()
 
+const router = useRouter()
+
+const logout = () => {
+  window.sessionStorage.removeItem('username')
+  router.push({path: '/signin'})
+}
+
 </script>
 <template>
   <el-container>
@@ -125,6 +131,8 @@ getMessageList()
             <User />
           </el-icon>
           <span class="text">{{ store.username }}</span>
+
+          <el-button :icon="SwitchButton" size="small" link class="logout" @click="logout"></el-button>
         </div>
       </div>
 
@@ -173,7 +181,11 @@ getMessageList()
 
     .text {
       display: inline-block;
-      margin-left: 8px;
+      margin: 0 8px;
+    }
+    .logout {
+      color: #fff;
+      font-size: 1em;
     }
   }
 

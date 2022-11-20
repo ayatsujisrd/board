@@ -12,6 +12,9 @@ const routes: RouteRecordRaw[] = [{
   component: () => import('@/views/signin.vue')
 }, {
   path: '/signup',
+  meta: {
+    allowed: true
+  },
   name: 'signup',
   component: () => import('@/views/signup.vue')
 
@@ -23,8 +26,8 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if (!window.sessionStorage.getItem('username') && to.name !== 'signin') {
-    next({name: 'signin'})
+  if (!window.sessionStorage.getItem('username') && to.name !== 'signin' && !(to.meta && to.meta.allowed)) {
+    next({ name: 'signin' })
   } else {
     next()
   }
