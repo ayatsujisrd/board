@@ -27,14 +27,14 @@ const confirm = () => {
   formRef.value?.validate((valid) => {
     if (valid) {
       signin({ name: form.username, password: form.password }).then((res) => {
-        const { status, data, msg } = res
+        const { status, data } = res
 
         if (status === 200 && data.code === 1) {
           router.push({ path: '/' })
           window.sessionStorage.setItem('username', form.username)
           store.username = form.username
         } else {
-          ElMessage.error(msg)
+          ElMessage.error(data.msg)
         }
       }).catch((e) => {
         ElMessage.error('Network error')

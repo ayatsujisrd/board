@@ -7,7 +7,7 @@ import MessageItem from '../components/MessageItem.vue';
 import { addMessage, getMessages } from '../api';
 import { ElMessage } from 'element-plus';
 import { watch } from '@vue/runtime-core';
-import { useRoute, useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
 
 interface MenuItem {
   name: string,
@@ -26,6 +26,12 @@ const menu = reactive<MenuItem[]>([{
   name: 'Study',
   active: false
 }])
+
+const pagination = reactive({
+  pageNo: 1,
+  pageSize: 10,
+  total: 0
+})
 
 const search = () => {
   getMessageList()
@@ -70,8 +76,9 @@ const cancel = () => {
 }
 
 const getMessageList = async () => {
-  const result = await getMessages({ category: store.category, pageSize: 10, pageNo: 1, search: searchText.value })
-  store.messages = reactive(result.data)
+  const { data } = await getMessages({ category: store.category, pageSize: pagination.pageSize, pageNo: pagination.pageNo, search: searchText.value })
+  store.messages = reactive(data.data)
+  pagination.total = data.total
 }
 
 const pickCategory = (item: MenuItem) => {
@@ -106,7 +113,13 @@ const router = useRouter()
 
 const logout = () => {
   window.sessionStorage.removeItem('username')
-  router.push({path: '/signin'})
+  router.push({ path: '/signin' })
+}
+
+
+const currentChange = (current: number) => {
+  pagination.pageNo = current
+  getMessageList()
 }
 
 </script>
@@ -141,6 +154,7 @@ const logout = () => {
       <div class="container">
         <div v-if="store.messages && store.messages.length">
           <message-item v-for="item in store.messages" :key="item.id" v-bind="item" @add-reply="replied" />
+          <el-pagination layout="prev,pager,next" :total="pagination.total" :page-size="pagination.pageSize" @current-change="currentChange" class="mt-2" background></el-pagination>
         </div>
         <div v-else>
           <el-empty description="no data"></el-empty>
@@ -183,6 +197,7 @@ const logout = () => {
       display: inline-block;
       margin: 0 8px;
     }
+
     .logout {
       color: #fff;
       font-size: 1em;
