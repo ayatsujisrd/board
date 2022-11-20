@@ -8,7 +8,7 @@ const instance = axios.create({
 
 export default instance
 
-const service = <T>(config: AxiosRequestConfig) => instance<T>(config).then((result) => result.data)
+const service = <T>(config: AxiosRequestConfig):Promise<T> => instance<T>(config).then((result) => result.data)
 
 export const get = <T>(url: string, params?: any) => service<T>({
   method: 'GET',
