@@ -178,6 +178,8 @@ const currentChange = (current: number) => {
   padding: 0 4em;
   background: steelblue;
   color: #fff;
+  position: sticky;
+  top: 0;
 
   .right {
     display: flex;
