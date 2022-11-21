@@ -18,6 +18,22 @@ const routes: RouteRecordRaw[] = [{
   name: 'signup',
   component: () => import('@/views/signup.vue')
 
+}, {
+  path: '/forget',
+  meta: {
+    allowed: true
+  },
+  name: 'forget',
+  component: () => import('@/views/forget.vue')
+
+}, {
+  path: '/reset',
+  meta: {
+    allowed: true
+  },
+  name: 'reset',
+  component: () => import('@/views/reset.vue')
+
 }]
 
 const router = createRouter({

@@ -1,5 +1,5 @@
 import { ResponseWithData, User, UserWithEmail, MessageParams, MessageItemProps, ResponseId, ReplyParams, IId, ResponseStatus, DeleteReplyParams } from '../types'
-import { del, get, post, put } from '../utils/request'
+import { del, get, patch, post, put } from '../utils/request'
 
 export const signin = (params: User) => post<ResponseWithData<{ code: 0 | 1, msg: string }>>('/signin', params)
 
@@ -14,3 +14,7 @@ export const addReply = (params: ReplyParams) => put<ResponseWithData<ResponseId
 export const deleteMessage = (params: IId) => del<ResponseWithData<ResponseStatus>>('/deleteMessage', params)
 
 export const deleteReply = (params: DeleteReplyParams) => del<ResponseWithData<ResponseStatus>>('/deleteReply', params)
+
+export const forget = (params: {email: string}) => post<ResponseWithData<ResponseStatus>>('/forget', params)
+
+export const reset = (params: {email: string, token: string, password: string}) => patch<ResponseWithData<ResponseStatus>>('/reset', params)
