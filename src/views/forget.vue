@@ -21,7 +21,7 @@ const store = useStore()
 const confirm = () => {
   formRef.value?.validate((valid) => {
     if (valid) {
-      forget({email:form.email}).then((res) => {
+      forget({ email: form.email }).then((res) => {
         const { status, data } = res
 
         if (status === 200 && data.code === 1) {
@@ -47,10 +47,11 @@ const confirm = () => {
           <h3>Forget Password</h3>
         </template>
 
-        <el-form ref="formRef" label-width="120px" :model="form" :rules="rules">
+        <el-form ref="formRef" :model="form" :rules="rules">
           <el-form-item label="Email" prop="email">
             <el-input v-model="form.email" placeholder="Email"></el-input>
           </el-form-item>
+          <el-button type="primary" @click="confirm">Send</el-button>
         </el-form>
       </el-card>
     </el-col>

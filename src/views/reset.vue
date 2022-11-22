@@ -49,6 +49,7 @@ const confirm = () => {
       reset({ password: form.password, email: form.email, token: route.query.token as string }).then((res) => {
         const { status, data, msg } = res
         if (status === 200 && data.code === 1) {
+          ElMessage.success(data.msg)
           router.push('/signin')
         } else {
           ElMessage.error(data.msg)
@@ -72,7 +73,7 @@ const confirm = () => {
 
         <el-form ref="formRef" label-width="120px" :model="form" :rules="rules">
           <el-form-item label="Email" prop="email">
-            <el-input v-model="form.email" placeholder="Email" readonly></el-input>
+            <el-input v-model="form.email" placeholder="Email" readonly disabled></el-input>
           </el-form-item>
           <el-form-item label="Password" prop="password">
             <el-input type="password" v-model="form.password" placeholder="Password"></el-input>
