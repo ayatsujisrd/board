@@ -32,6 +32,7 @@ const confirm = () => {
         if (status === 200 && data.code === 1) {
           router.push({ path: '/' })
           window.sessionStorage.setItem('username', form.username)
+          window.localStorage.setItem('token', data.accessToken)
           store.username = form.username
         } else {
           ElMessage.error(data.msg)

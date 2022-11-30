@@ -1,7 +1,7 @@
 import { ResponseWithData, User, UserWithEmail, MessageParams, MessageItemProps, ResponseId, ReplyParams, IId, ResponseStatus, DeleteReplyParams } from '../types'
 import { del, get, patch, post, put } from '../utils/request'
 
-export const signin = (params: User) => post<ResponseWithData<{ code: 0 | 1, msg: string }>>('/signin', params)
+export const signin = (params: User) => post<ResponseWithData<{ code: 0 | 1, msg: string, accessToken: string }>>('/signin', params)
 
 export const signup = (params: UserWithEmail) => put<ResponseWithData<{ code: 0 | 1, msg: string }>>('/signup', params)
 
