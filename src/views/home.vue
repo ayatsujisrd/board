@@ -113,6 +113,7 @@ const router = useRouter()
 
 const logout = () => {
   window.sessionStorage.removeItem('username')
+  window.localStorage.removeItem('token')
   router.push({ path: '/signin' })
 }
 
