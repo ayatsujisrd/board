@@ -1,4 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios'
+import router from '../router'
 
 
 const instance = axios.create({
@@ -14,6 +15,18 @@ instance.interceptors.request.use((config) => {
     }
   }
   return config
+})
+instance.interceptors.response.use((response) => {
+  if (response.status === 401) {
+    router.push('/signin')
+    return response
+  }
+  return response
+}, (error) => {
+  console.log(error)
+  if(error.response.status === 401) {
+    router.push('/signin')
+  }
 })
 
 
